@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using CliParse;
 using CLI.BundlerConfigurationSchema;
@@ -23,19 +25,20 @@ namespace CLI
                 return;
             }
 
-            GeneratePackages().Wait();
+            var sw = Stopwatch.StartNew();
+            GeneratePackages();
+            Console.Write($"Packaging finished, elapsed time: {sw.Elapsed}");
         }
 
-        private static async Task GeneratePackages()
+        private static void GeneratePackages()
         {
             var config = BundlerConfiguration.FromJson(File.ReadAllText(cliParams.Config));
+            var tasks = new List<Task>();
 
-            foreach (var package in config.Packages)
-            {
-                var packageConfig = Configuration.FromJson(package.ToString());
-//                await new ZipFileGenerator(packageConfig).WriteFileAsync();
-                new ZipFileGenerator(packageConfig).WriteFile();
-            }
+            Task.WaitAll(config.Packages
+                .Select(package => new ZipFileGenerator(Configuration.FromJson(package.ToString())).WriteFileAsync())
+                .ToArray()
+            );
         }
     }
 }
