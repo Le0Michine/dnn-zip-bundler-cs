@@ -1,0 +1,15 @@
+{
+  "name": "test1",
+  "entries": [
+    "stringhehe",
+    {
+      "type": "file",
+      "name": "fileEntry",
+      "path": "file/entry/path"
+    }
+  ],
+  "ignoreEntries": [
+    "ignore1",
+    "ignore2"
+  ]
+}

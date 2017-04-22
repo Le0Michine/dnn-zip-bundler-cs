@@ -1,0 +1,12 @@
+{
+  "entries": [
+    "sass/index.scss",
+    "sass/_some-styles.scss",
+    "books.xml"
+  ],
+  "ignoreEntries": [
+    ".DS_Store",
+    "ignore_this_dir"
+  ],
+  "name": "output/out1.zip"
+}

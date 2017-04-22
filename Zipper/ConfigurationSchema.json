@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "configuration",
+  "title": "configuration",
+  "type": "object",
+  "properties": {
+    "entries": {
+      "$ref": "#/definitions/entriesArray"
+    },
+    "ignoreEntries": {
+      "$ref": "#/definitions/ignoreEntriesArray"
+    },
+    "name": {
+      "type": "string"
+    }
+  },
+  "definitions": {
+    "fileEntry": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/entryTypeEnum"
+        }
+      }
+    },
+    "zipEntry": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/entryTypeEnum"
+        },
+        "entries": {
+          "$ref": "#/definitions/entriesArray"
+        },
+        "ignoreEntries": {
+          "$ref": "#/definitions/ignoreEntriesArray"
+        }
+      }
+    },
+    "entryTypeEnum": {
+      "type": "string",
+      "enum": [
+        "file",
+        "zip"
+      ]
+    },
+    "entriesArray": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "$ref": "#/definitions/fileEntry"
+          },
+          {
+            "$ref": "#/definitions/zipEntry"
+          }
+        ]
+      }
+    },
+    "ignoreEntriesArray": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

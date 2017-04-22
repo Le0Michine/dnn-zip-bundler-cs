@@ -1,0 +1,7 @@
+.idea/
+bin/
+obj/
+packages/
+.DS_Store
+*.*.iml
+**/Schemas/*Schema.cs

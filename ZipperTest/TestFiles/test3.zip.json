@@ -1,0 +1,33 @@
+{
+  "entries": [
+    "sass/index.scss",
+    "sass/_some-styles.scss",
+    "sass",
+    "books.xml",
+    {
+      "name": "test.json"
+    },
+    {
+      "name": "sass/_some-styles.scss",
+      "path": "/"
+    },
+    {
+      "name": "sass/to_extract",
+      "path": "/"
+    },
+    {
+      "type": "zip",
+      "name": "test12/test.zip",
+      "entries": [
+        "sass",
+        "test.json"
+      ]
+    }
+  ],
+  "ignoreEntries": [
+    ".DS_Store",
+    "ignore_this_dir",
+    "to_extract"
+  ],
+  "name": "output/out3.zip"
+}

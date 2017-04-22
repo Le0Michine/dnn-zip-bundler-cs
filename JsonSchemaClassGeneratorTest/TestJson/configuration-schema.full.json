@@ -1,0 +1,26 @@
+{
+  "name": "test1",
+  "entries": [
+    "stringEntry",
+    {
+      "type": "file",
+      "name": "fileEntry",
+      "path": "file/entry/path"
+    },
+    {
+      "type": "zip",
+      "name": "nestedZip",
+      "entries": [
+        "nestedStringEntry",
+        {
+          "type": "file",
+          "name": "nestedFileEntry"
+        }
+      ]
+    }
+  ],
+  "ignoreEntries": [
+    "ignore1",
+    "ignore2"
+  ]
+}

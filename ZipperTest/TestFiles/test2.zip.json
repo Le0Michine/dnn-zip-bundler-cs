@@ -1,0 +1,31 @@
+{
+  "entries": [
+    "sass/index.scss",
+    "sass/_some-styles.scss",
+    "sass",
+    "books.xml",
+    {
+      "type": "file",
+      "name": "test.json"
+    },
+    {
+      "type": "file",
+      "name": "sass/_some-styles.scss",
+      "path": "/"
+    },
+    {
+      "type": "zip",
+      "path": "zippathhehe",
+      "name": "test12/test.zip",
+      "entries": [
+        "sass",
+        "test.json"
+      ]
+    }
+  ],
+  "ignoreEntries": [
+    ".DS_Store",
+    "ignore_this_dir"
+  ],
+  "name": "output/out2.zip"
+}

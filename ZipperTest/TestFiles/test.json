@@ -1,0 +1,28 @@
+{
+  "packages": [
+    {
+      "name": "out.zip",
+      "entries": [
+        "sass/index.scss",
+        "sass/_some-styles.scss",
+        "sass",
+        "books.xml",
+        {
+          "type": "file",
+          "name": "test.json"
+        },
+        {
+          "type": "zip",
+          "name": "test12/test.zip",
+          "entries": [
+            "sass",
+            "test.json"
+          ]
+        }
+      ],
+      "ignoreEntries": [
+        ".DS_Store"
+      ]
+    }
+  ]
+}
