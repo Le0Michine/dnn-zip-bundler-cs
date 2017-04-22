@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -13,27 +12,31 @@ namespace CLI
 {
     internal class Program
     {
-        private static readonly Params cliParams = new Params();
+        private static readonly Params CliParams = new Params();
+        private static readonly ConsoleSpiner Spiner = new ConsoleSpiner();
 
         public static void Main(string[] args)
         {
-            var result = cliParams.CliParse(args);
+            var result = CliParams.CliParse(args);
 
             if (!result.Successful || result.ShowHelp)
             {
-                Console.WriteLine(cliParams.GetHelpInfo());
+                Console.WriteLine(CliParams.GetHelpInfo());
                 return;
             }
 
+            Console.Write("Start packaging...");
+            var task = Spiner.Start();
+
             var sw = Stopwatch.StartNew();
             GeneratePackages();
-            Console.Write($"Packaging finished, elapsed time: {sw.Elapsed}");
+            Spiner.Stop();
+            Console.WriteLine($" \nPackaging finished, elapsed time: {sw.Elapsed}");
         }
 
         private static void GeneratePackages()
         {
-            var config = BundlerConfiguration.FromJson(File.ReadAllText(cliParams.Config));
-            var tasks = new List<Task>();
+            var config = BundlerConfiguration.FromJson(File.ReadAllText(CliParams.Config));
 
             Task.WaitAll(config.Packages
                 .Select(package => new ZipFileGenerator(Configuration.FromJson(package.ToString())).WriteFileAsync())
