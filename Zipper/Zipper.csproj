@@ -74,9 +74,6 @@
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <Import Project="..\JsonSchemaClassGenerator\GenerationUtilityAction.target"/>
-    <PropertyGroup>
-        <JsonClassesGeneratorPath>..\JsonSchemaClassGenerator</JsonClassesGeneratorPath>
-    </PropertyGroup>
     <ItemGroup>
         <GenerateJsonClasses Include="ConfigurationSchema.json">
             <Link>Schemas\ConfigurationSchema.json</Link>

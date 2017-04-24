@@ -4,7 +4,8 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <JsonClassesGeneratorPath Condition="'$(JsonClassesGeneratorPath)' == ''">.</JsonClassesGeneratorPath>
+        <JsonClassesGeneratorPath Condition="'$(JsonClassesGeneratorPath)' == ''">$(MSBuildThisFileDirectory)
+        </JsonClassesGeneratorPath>
     </PropertyGroup>
 
     <PropertyGroup>
