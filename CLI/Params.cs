@@ -14,5 +14,8 @@ namespace CLI
 
         [ParsableArgument("bumpSprint", ShortName = 's', DefaultValue = false)]
         public bool BumpSprint { get; set; }
+
+        [ParsableArgument("targetVersion", ShortName = 'v')]
+        public string TargetVersion { get; set; }
     }
 }

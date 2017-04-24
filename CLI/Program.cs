@@ -5,12 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using CliParse;
 using CLI.BundlerConfigurationSchema;
+using ManifestEditor;
 using Zipper;
 using Zipper.ConfigurationSchema;
 
 namespace CLI
 {
-    internal class Program
+    internal static class Program
     {
         private static readonly Params CliParams = new Params();
         private static readonly ConsoleSpiner Spiner = new ConsoleSpiner();
@@ -25,23 +26,56 @@ namespace CLI
                 return;
             }
 
+            var config = BundlerConfiguration.FromJson(File.ReadAllText(CliParams.Config));
+            var newPackageVersion = UpdateVersion(config);
+            GeneratePackages(config, newPackageVersion);
+        }
+
+        private static PackageVersion UpdateVersion(BundlerConfiguration config)
+        {
+            var currentVersion = ManifestVersionReplacer.GetVersionFromManifest(config.Manifests.First());
+            var newVersion = CliParams.BumpBuild
+                ? currentVersion.IncrementBuild()
+                : CliParams.BumpSprint
+                    ? currentVersion.IncrementSprint()
+                    : !string.IsNullOrWhiteSpace(CliParams.TargetVersion)
+                        ? new PackageVersion(CliParams.TargetVersion)
+                        : currentVersion;
+            Console.WriteLine($"Current version in manifest: {currentVersion}");
+            Console.WriteLine($"Target package version: {newVersion}");
+
+            foreach (var manifest in config.Manifests)
+            {
+                try
+                {
+                    ManifestVersionReplacer.ReplaceVersion(manifest, newVersion);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Failed to update manifest file: {manifest}, exception occurred: ${e.Message}");
+                }
+            }
+
+            return newVersion;
+        }
+
+        private static void GeneratePackages(BundlerConfiguration config, PackageVersion newPackageVersion)
+        {
             Console.Write("Start packaging...");
             var task = Spiner.Start();
-
             var sw = Stopwatch.StartNew();
-            GeneratePackages();
+            Task.WaitAll(config.Packages
+                .Select(package => new ZipFileGenerator(ReplacePlaceholders(Configuration.FromJson(package.ToString()), newPackageVersion)).WriteFileAsync())
+                .ToArray()
+            );
             Spiner.Stop();
             Console.WriteLine($" \nPackaging finished, elapsed time: {sw.Elapsed}");
         }
 
-        private static void GeneratePackages()
+        private static Configuration ReplacePlaceholders(Configuration config, PackageVersion newPackageVersion)
         {
-            var config = BundlerConfiguration.FromJson(File.ReadAllText(CliParams.Config));
-
-            Task.WaitAll(config.Packages
-                .Select(package => new ZipFileGenerator(Configuration.FromJson(package.ToString())).WriteFileAsync())
-                .ToArray()
-            );
+            config.Name = config.Name.Replace("[PACKAGE_VERSION]", newPackageVersion.ToString());
+            return config;
         }
     }
 }

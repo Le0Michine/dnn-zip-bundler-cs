@@ -69,6 +69,10 @@
     </GenerateJsonClasses>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ManifestEditor\ManifestEditor.csproj">
+      <Project>{29B49F72-E449-4752-96B3-05159C7DAD39}</Project>
+      <Name>ManifestEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zipper\Zipper.csproj">
       <Project>{E6BDD370-5543-4BBD-BA6D-4E9DD326524F}</Project>
       <Name>Zipper</Name>

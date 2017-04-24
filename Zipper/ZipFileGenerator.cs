@@ -108,10 +108,10 @@ namespace Zipper
                 result.AddRange(GetDirectoriesRecursively(ToRelativePath(fileSystemDirectory), entryPath, ignoreEntries,
                     replacePath));
             }
-            foreach (var fileSystemFile in Directory.EnumerateFiles(ResolvePath(dir)))
+            foreach (var fileSystemFile in Directory.EnumerateFiles(ResolvePath(dir)).Where(x => FilterEntries(x, null, ignoreEntries)))
             {
                 var relPath = ToRelativePath(fileSystemFile);
-                var path = entryPath == null ? relPath : relPath.Replace(replacePath, entryPath);
+                var path = entryPath == null ? relPath : ReplacePath(relPath, replacePath, entryPath);
                 result.Add(new FileEntryInfo
                 {
                     Name = path,
@@ -169,6 +169,12 @@ namespace Zipper
             }
             var relPath = path.Replace(_basePath, "");
             return Path.IsPathRooted(relPath) ? relPath.Substring(1) : relPath;
+        }
+
+        private string ReplacePath(string path, string pathToReplace, string replaceWith)
+        {
+            var result = path.Replace(pathToReplace, replaceWith);
+            return Path.IsPathRooted(result) ? result.Substring(1) : result;
         }
     }
 }
