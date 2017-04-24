@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Zipper.ConfigurationSchema;
@@ -128,7 +129,11 @@ namespace Zipper
             {
                 return true;
             }
-            return !ignoreEntries.Any(x => entry.ToUpper().Contains(x.ToUpper()));
+            return !ignoreEntries.Any(x =>
+            {
+                var regex = new Regex(Regex.Replace(x.Replace("*", ".*"), @"[/\\]+", @"[/\\]+"), RegexOptions.IgnoreCase);
+                return regex.IsMatch(entry);
+            });
         }
 
         private byte[] Compress(IEnumerable<IEntry> entries)
