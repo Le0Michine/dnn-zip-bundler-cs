@@ -14,7 +14,7 @@
     </PropertyGroup>
 
     <UsingTask TaskName="GenerationUtility"
-               AssemblyFile="$(JsonClassesGeneratorPath)\bin\JsonSchemaClassGenerator.dll"/>
+               AssemblyFile="$(JsonClassesGeneratorPath)\dll\JsonSchemaClassGenerator.dll"/>
 
     <Target Name="JsonClass" Inputs="@(GenerateJsonClasses)" Outputs="@(GenerateJsonClasses -> '%(filename).cs')">
         <GenerationUtility Namespace="$(ProjectName)" InputFiles="$(InputFiles)" OutputFiles="$(OutputDirectory)"/>

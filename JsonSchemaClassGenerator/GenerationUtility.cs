@@ -67,7 +67,7 @@ namespace JsonSchemaClassGenerator
             var changeExtension = Path.ChangeExtension(jsonSchemaFilePath ?? "", "cs");
             outputPath = outputPath == null ? changeExtension : Path.Combine(outputPath, Path.GetFileName(changeExtension));
 
-            if (!Directory.Exists(Path.GetDirectoryName(outputPath)))
+            if (!Directory.Exists(Path.GetDirectoryName(outputPath)) && !string.IsNullOrEmpty(Path.GetDirectoryName(outputPath)))
             {
                 Directory.CreateDirectory(outputPath);
             }
