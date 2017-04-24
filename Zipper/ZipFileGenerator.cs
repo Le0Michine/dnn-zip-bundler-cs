@@ -14,6 +14,7 @@ namespace Zipper
     {
         private readonly Configuration _configuration;
         private readonly string _basePath;
+        private readonly Dictionary<string, Regex> _ignoreEntriesFilterRegexCache = new Dictionary<string, Regex>();
 
         public ZipFileGenerator(Configuration configuration, string basePath = null)
         {
@@ -131,8 +132,17 @@ namespace Zipper
             }
             return !ignoreEntries.Any(x =>
             {
-                var regex = new Regex(Regex.Replace(x.Replace("*", ".*"), @"[/\\]+", @"[/\\]+"), RegexOptions.IgnoreCase);
-                return regex.IsMatch(entry);
+                Regex filterRegex;
+                if (_ignoreEntriesFilterRegexCache.ContainsKey(x))
+                {
+                    filterRegex = _ignoreEntriesFilterRegexCache[x];
+                }
+                else
+                {
+                    filterRegex = new Regex(Regex.Replace(x.Replace("*", ".*"), @"[/\\]+", @"[/\\]+"), RegexOptions.IgnoreCase);
+                    _ignoreEntriesFilterRegexCache[x] = filterRegex;
+                }
+                return filterRegex.IsMatch(entry);
             });
         }
 
