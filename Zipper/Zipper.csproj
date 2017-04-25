@@ -76,7 +76,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="..\packages\JsonSchemaClassGenerator.1.0.0.8\build\JsonSchemaClassGenerator.targets" />
+  <Import Project="..\packages\JsonSchemaClassGenerator.1.0.0.8\build\JsonSchemaClassGenerator.targets" Condition="Exists('..\packages\JsonSchemaClassGenerator.1.0.0.8\build\JsonSchemaClassGenerator.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
          Other similar extension points exist, see Microsoft.Common.targets.
     <Target Name="BeforeBuild">
