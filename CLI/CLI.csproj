@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\MSBuild.ILMerge.Task.1.0.5\build\MSBuild.ILMerge.Task.props" />
+  <Import Project="..\packages\MSBuild.ILMerge.Task.1.0.5\build\MSBuild.ILMerge.Task.props" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -101,8 +102,16 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\JsonSchemaClassGenerator.1.0.0.8\build\JsonSchemaClassGenerator.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\JsonSchemaClassGenerator.1.0.0.8\build\JsonSchemaClassGenerator.targets'))" />
   </Target>
+<<<<<<< HEAD
   <Import Project="..\packages\JsonSchemaClassGenerator.1.0.0.8\build\JsonSchemaClassGenerator.targets" />
   <Import Project="..\packages\MSBuild.ILMerge.Task.1.0.5\build\MSBuild.ILMerge.Task.targets" />
+=======
+  <Import Project="..\packages\JsonSchemaClassGenerator.1.0.0.8\build\JsonSchemaClassGenerator.targets" Condition="Exists('..\packages\JsonSchemaClassGenerator.1.0.0.8\build\JsonSchemaClassGenerator.targets')" />
+>>>>>>> origin/master
+    <None Include="ILMerge.props" />
+    <Content Include="ILMergeOrder.txt" />
+  <Import Project="..\packages\MSBuild.ILMerge.Task.1.0.5\build\MSBuild.ILMerge.Task.targets" />
+  <Import Project="..\packages\JsonSchemaClassGenerator.1.0.0.8\build\JsonSchemaClassGenerator.targets" Condition="Exists('..\packages\JsonSchemaClassGenerator.1.0.0.8\build\JsonSchemaClassGenerator.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
          Other similar extension points exist, see Microsoft.Common.targets.
     <Target Name="BeforeBuild">
