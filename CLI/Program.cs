@@ -26,6 +26,12 @@ namespace CLI
                 return;
             }
 
+            if (!File.Exists(CliParams.Config))
+            {
+                Console.WriteLine($"Unable to find config file: {CliParams.Config}");
+                return;
+            }
+
             var config = BundlerConfiguration.FromJson(File.ReadAllText(CliParams.Config));
             var newPackageVersion = UpdateVersion(config);
             GeneratePackages(config, newPackageVersion);
