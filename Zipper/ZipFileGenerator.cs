@@ -42,23 +42,21 @@ namespace Zipper
         {
             var allEntries = entries.SelectMany(entry =>
             {
-                var directoryOrFile = entry as string;
-                if (directoryOrFile != null)
+                if (entry is string directoryOrFile)
                 {
                     return GetAllEntries(directoryOrFile, null, ignoreEntries);
                 }
-                var jObject = entry as JObject;
-                if (jObject != null)
+                if (entry is JObject jObject)
                 {
                     var jsonEntry = jObject;
                     if (jsonEntry.IsFileEntry())
                     {
-                        var fileEntry = (FileEntry) jsonEntry;
+                        var fileEntry = (FileEntry)jsonEntry;
                         return GetAllEntries(fileEntry.Name, fileEntry.Path, ignoreEntries);
                     }
                     if (jsonEntry.IsZipEntry())
                     {
-                        var zipEntry = (ZipEntry) jsonEntry;
+                        var zipEntry = (ZipEntry)jsonEntry;
                         return new List<IEntry>
                         {
                             new ZipEntryInfo
@@ -188,7 +186,8 @@ namespace Zipper
 
         private string ReplacePath(string path, string pathToReplace, string replaceWith)
         {
-            var result = path.Replace(pathToReplace, replaceWith);
+            var regex = new Regex(Regex.Escape(pathToReplace));
+            var result = regex.Replace(path, replaceWith, 1);
             return Path.IsPathRooted(result) ? result.Substring(1) : result;
         }
     }

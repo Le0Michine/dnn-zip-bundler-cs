@@ -15,6 +15,7 @@ namespace CLI
     {
         private static readonly Params CliParams = new Params();
         private static readonly ConsoleSpiner Spiner = new ConsoleSpiner();
+        private static string workingDirectory = Directory.GetCurrentDirectory();
 
         public static void Main(string[] args)
         {
@@ -32,7 +33,18 @@ namespace CLI
                 return;
             }
 
+            var wd = Path.GetDirectoryName(Path.GetFullPath(CliParams.Config));
+            Console.WriteLine($"Working directory: {wd}");
+            Directory.SetCurrentDirectory(wd);
+
             var config = BundlerConfiguration.FromJson(File.ReadAllText(CliParams.Config));
+
+            config.Manifests.ToList().ForEach(manifest => {
+                if (!File.Exists(manifest)) {
+                    Console.WriteLine($"Unable to find manifest file: {manifest}");
+                }
+            });
+
             var newPackageVersion = UpdateVersion(config);
             GeneratePackages(config, newPackageVersion);
         }
